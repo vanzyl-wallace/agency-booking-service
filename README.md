@@ -39,3 +39,15 @@
       Guest user: Can only access get all reservations api call.
       Username: guest
       Password: p@55w0rd1
+
+# Running the Postman Collection
+    The postman collection can be executed independently or by running the Test Case collection in automated sequence using the collection runner.
+    On initial startup there will be one reservation loaded in the database.
+        - You can execute Get All Reservations to view the reservations in the database.
+        - Then you can execute Make Reservation to make a booking, if you try to execute the same payload again, you will trigger a data constraint violation on the room number.
+        - When you execute the Get All Reservations, you will note the addititional reservation made.
+        - You can update a reservation by executing Update Booking, you need to provide the id of the booking(which you can find when executing the Get All reservations, in this case we are using the id from the one we created: 2)
+            - After executing the Update Booking, you will notice the name changed when executing Get All Reservations.
+            - If you execute the Update Booking againg, but this time giving it a room number already used i.e 204 used by the initial reservation, you will trigger a data constraint violation on the room number.
+        - You can delete a booking by executing Cancel Booking you need to provide the id of the booking(which you can find when executing the Get All reservations, in this case we are using the id from the one we created: 2)
+        - When executing the Get All Reservations you will note just the initial reservation still active.
