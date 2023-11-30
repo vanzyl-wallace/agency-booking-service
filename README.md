@@ -3,9 +3,9 @@
 
 
 
-    #SpringBoot Microservice
-    #Postman testing collection
-    #Postman local environments
+    #SpringBoot Application
+    #Postman local-spring-boot collection
+    #Postman local-docker environments
     #H2 Embedded Database
     #Swagger
 
@@ -25,3 +25,6 @@
 # Running the application inside a docker container:
     # Execute the following commands in the terminal:
         - mvn clean package -P local -P h2
+        - docker build --tag=agency-booking-service-image:latest . 
+        - docker run -p8080:9090 agency-booking-service-image:latest
+            - you can now access the application through port 8080 of the docker container which will map to the application port 9090
