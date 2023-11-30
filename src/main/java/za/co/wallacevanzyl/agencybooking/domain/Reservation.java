@@ -1,9 +1,6 @@
 package za.co.wallacevanzyl.agencybooking.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigInteger;
 import java.util.Date;
@@ -21,6 +18,7 @@ public class Reservation {
     private String lastName;
     private BigInteger contactNumber;
     private BigInteger idNumber;
+    @Column(unique=true)
     private int roomNumber;
 
     private Date checkIn;

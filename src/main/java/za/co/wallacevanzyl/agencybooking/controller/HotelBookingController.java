@@ -2,6 +2,8 @@ package za.co.wallacevanzyl.agencybooking.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -39,10 +41,19 @@ public class HotelBookingController {
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public ResponseEntity<Reservation> makeReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<String> makeReservation(@RequestBody ReservationDto reservationDto) {
+
         log.info("Making a reservation.");
-        Reservation reservationCreated = reservationDao.makeBooking(reservation);
-        return new ResponseEntity<>(reservationCreated, HttpStatus.CREATED);
+
+        try{
+            reservationDao.makeBooking(reservationDto);
+            return new ResponseEntity<>("Booking created.", HttpStatus.CREATED);
+
+        } catch (DataIntegrityViolationException dataIntegrityViolationException) {
+            log.warn(dataIntegrityViolationException.getMessage());
+            return new ResponseEntity<>("Cannot make booking - room already booked: " , HttpStatus.CONFLICT);
+
+        }
     }
 
     @Secured("ROLE_ADMIN")
@@ -53,9 +64,15 @@ public class HotelBookingController {
         try {
             reservationDao.updateBooking(id, reservationDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
+
         } catch (EntityNotFoundException entityNotFoundException) {
             log.warn(entityNotFoundException.getMessage());
-            return new ResponseEntity<>("Cannot update booking: Unable to find entity with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Cannot update booking - Unable to find booking with id: " + id, HttpStatus.NOT_FOUND);
+
+        }  catch (DataIntegrityViolationException dataIntegrityViolationException) {
+            log.warn(dataIntegrityViolationException.getMessage());
+            return new ResponseEntity<>("Cannot update booking to that room - room already booked: " , HttpStatus.CONFLICT);
+
         }
     }
 
@@ -66,9 +83,11 @@ public class HotelBookingController {
         try {
             reservationDao.cancelBooking(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EntityNotFoundException entityNotFoundException) {
-            log.warn(entityNotFoundException.getMessage());
-            return new ResponseEntity<>("Cannot cancel booking: Unable to find entity with id: " + id, HttpStatus.NOT_FOUND);
+
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            log.warn(emptyResultDataAccessException.getMessage());
+            return new ResponseEntity<>("Cannot cancel booking - Unable to find booking with id: " + id, HttpStatus.NOT_FOUND);
+
         }
     }
 

@@ -13,6 +13,9 @@ create table reservation (
                              primary key (id)
 );
 
+ALTER TABLE reservation
+ADD CONSTRAINT room_constraint UNIQUE (room_number);
+
 create table hibernate_sequence (
     next_val bigint
 );

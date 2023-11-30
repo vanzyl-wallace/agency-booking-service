@@ -10,7 +10,7 @@ public interface ReservationDao {
 
     List<Reservation> getAllReservations();
 
-    Reservation makeBooking(Reservation reservation);
+    void makeBooking(ReservationDto reservationDto);
 
     void updateBooking(long id, ReservationDto reservationDto);
 

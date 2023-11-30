@@ -13,6 +13,7 @@ public interface ReservationMapper {
 
     ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
     ReservationDto reservationToReservationDto(Reservation reservation);
+    Reservation reservationDtoToReservation(ReservationDto reservationDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateReservationFromDto(ReservationDto dto, @MappingTarget Reservation entity);

@@ -32,8 +32,8 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public Reservation makeBooking(Reservation reservation) {
-        return reservationRepository.save(reservation);
+    public void makeBooking(ReservationDto reservationDto) {
+        reservationRepository.save(reservationMapper.reservationDtoToReservation(reservationDto));
     }
 
     @Override
