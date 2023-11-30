@@ -55,3 +55,6 @@
         - You can delete a booking by executing Cancel Booking you need to provide the id of the booking(which you can find when executing the Get All reservations, in this case we are using the id from the one we created: 2)
         - When executing the Get All Reservations you will note just the initial reservation still active.
         - If you execute Cancel Booking usingthe same id, you will trigger an entity not found error.
+    
+    There are also 2x XML calls for Making a booking and updating a booking in the XML folder.
+    You also have a actuator health check in the Metrics folder.
