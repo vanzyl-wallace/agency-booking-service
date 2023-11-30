@@ -1,0 +1,869 @@
+{
+	"info": {
+		"_postman_id": "53d65d63-6b86-4287-9130-b271472e491a",
+		"name": "DigiCert Agency Booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24771316",
+		"_collection_link": "https://winter-equinox-477717.postman.co/workspace/Apeiron-Technologies~41f20fa9-366e-41f1-83e1-e7c9801917be/collection/24771316-53d65d63-6b86-4287-9130-b271472e491a?action=share&source=collection_link&creator=24771316"
+	},
+	"item": [
+		{
+			"name": "App Metrics",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "guest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "XML",
+			"item": [
+				{
+					"name": "Make Reservation XML",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<reservationdto>\r\n    <firstName>Marge</firstName>\r\n    <lastName>Simpson</lastName>\r\n    <contactNumber>1435444171</contactNumber>\r\n    <idNumber>6532177748951</idNumber>\r\n    <roomNumber>305</roomNumber>\r\n    <checkIn>2024-02-10</checkIn>\r\n    <checkOut>2024-05-15</checkOut>\r\n</reservationdto>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<reservationdto>\r\n    <firstName>Marge Moved Room</firstName>\r\n    <lastName>Simpson</lastName>\r\n    <contactNumber>1435444171</contactNumber>\r\n    <idNumber>6532177748951</idNumber>\r\n    <roomNumber>306</roomNumber>\r\n    <checkIn>2024-02-10</checkIn>\r\n    <checkOut>2024-05-15</checkOut>\r\n</reservationdto>\r\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Cases",
+			"item": [
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(200);\r",
+									"    }\r",
+									");\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Has one reservation, room: 204\",\r",
+									"    function(){\r",
+									"        pm.expect(jsonData[0].roomNumber).to.be.eql(204);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "guest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make Reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(201);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Wackhead\",\r\n    \"lastName\": \"Simpson\",\r\n    \"contactNumber\": \"3687412589\",\r\n    \"idNumber\": \"9519146283182\",\r\n    \"roomNumber\": \"105\",\r\n    \"checkIn\": \"2024-06-15\",\r\n    \"checkOut\": \"2024-06-20\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(200);\r",
+									"    }\r",
+									");\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Room 204 reserved\",\r",
+									"    function(){\r",
+									"        pm.expect(jsonData[0].roomNumber).to.be.eql(204);\r",
+									"    }\r",
+									");\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Room 105 reserved\",\r",
+									"    function(){\r",
+									"        pm.expect(jsonData[1].roomNumber).to.be.eql(105);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "guest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\r",
+									"    \"Check response status is 201\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(201);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Bart\",\r\n    \"lastName\": \"Simpson\",\r\n    \"contactNumber\": \"3687412589\",\r\n    \"idNumber\": \"9519146283182\",\r\n    \"roomNumber\": \"105\",\r\n    \"checkIn\": \"2024-06-15\",\r\n    \"checkOut\": \"2024-06-20\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(200);\r",
+									"    }\r",
+									");\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Room 204 reserved, name changed: Bart\",\r",
+									"    function(){\r",
+									"        pm.expect(jsonData[1].firstName).to.be.eql(\"Bart\");\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "guest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\r",
+									"    \"Check response status is 409, room already booked.\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(409);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Bart\",\r\n    \"lastName\": \"Simpson\",\r\n    \"contactNumber\": \"3687412589\",\r\n    \"idNumber\": \"9519146283182\",\r\n    \"roomNumber\": \"204\",\r\n    \"checkIn\": \"2024-06-15\",\r\n    \"checkOut\": \"2024-06-20\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(200);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Check response status is 200\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(200);\r",
+									"    }\r",
+									");\r",
+									"\r",
+									"pm.test(\r",
+									"    \"Has one reservation, room: 204\",\r",
+									"    function(){\r",
+									"        pm.expect(jsonData[0].roomNumber).to.be.eql(204);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "guest",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\r",
+									"    \"Check response status is 404: booking not found.\",\r",
+									"    function(){\r",
+									"        pm.response.to.have.status(404);\r",
+									"    }\r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "p@55w0rd",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reservation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Reservations",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "p@55w0rd1",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "guest",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/reservation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Reservation",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "p@55w0rd",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Wackhead\",\r\n    \"lastName\": \"Simpson\",\r\n    \"contactNumber\": \"3687412589\",\r\n    \"idNumber\": \"9519146283182\",\r\n    \"roomNumber\": \"105\",\r\n    \"checkIn\": \"2024-06-15\",\r\n    \"checkOut\": \"2024-06-20\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/reservation",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Booking",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "p@55w0rd",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Bart Moved Room\",\r\n    \"lastName\": \"Simpson\",\r\n    \"contactNumber\": \"3687412589\",\r\n    \"idNumber\": \"9519146283182\",\r\n    \"roomNumber\": \"105\",\r\n    \"checkIn\": \"2024-06-15\",\r\n    \"checkOut\": \"2024-06-20\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/reservation/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reservation",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Booking",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "p@55w0rd",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/reservation/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"reservation",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
