@@ -30,7 +30,7 @@ public class DataInitializer implements CommandLineRunner {
 
         Reservation reservation = new Reservation("Jack", "Reaper", new BigInteger("3853499838"), new BigInteger("9519146286199"), 204, new Date(), new Date());
         Reservation reservationSaved = reservationRepository.save(reservation);
-        System.out.println(reservationSaved.getId());
+        log.info("Initialized reservation id: {}", reservationSaved.getId());
     }
 
 }

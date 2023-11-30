@@ -1,7 +1,5 @@
 package za.co.wallacevanzyl.agencybooking.dao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import za.co.wallacevanzyl.agencybooking.domain.Reservation;
 import za.co.wallacevanzyl.agencybooking.dto.ReservationDto;
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Component
 public class ReservationDaoImpl implements ReservationDao {
-    private static final Logger log = LoggerFactory.getLogger(ReservationDaoImpl.class);
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
 

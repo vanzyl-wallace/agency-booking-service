@@ -24,7 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)//This prevents Spring Boot from overriding the MYSQL properties specified in application-local.properties profile with an h2 db instance
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ComponentScan(basePackages = {"za.co.wallacevanzyl.agencybooking.bootstrap"})// This will bring in the DataInitializer into the test and execute its functionality.
-public class ReservationJpaTest {
+class ReservationJpaTest {
 
     @Autowired
     ReservationRepository reservationRepository;
