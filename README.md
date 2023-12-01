@@ -4,6 +4,12 @@
 
 
     SpringBoot Application
+    List Reservations
+    Make Booking
+    Update Booking
+    Cancel Booking
+    Page through bookings
+
     Postman local-spring-boot collection
     Postman local-docker environments
     H2 Embedded Database
@@ -58,3 +64,5 @@
     
     There are also 2x XML calls for Making a booking and updating a booking in the XML folder.
     You also have a actuator health check in the Metrics folder.
+
+    When using the Get All Reservations Paging you need to specify the page and size parameters.
