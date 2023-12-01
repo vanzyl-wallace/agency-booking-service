@@ -1,5 +1,6 @@
 package za.co.wallacevanzyl.agencybooking.dao;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import za.co.wallacevanzyl.agencybooking.domain.Reservation;
 import za.co.wallacevanzyl.agencybooking.dto.ReservationDto;
@@ -26,6 +27,11 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
+    }
+
+    @Override
+    public List<Reservation> getAllReservations(Pageable pageable) {
+        return reservationRepository.findAll(pageable).getContent();
     }
 
     @Override
