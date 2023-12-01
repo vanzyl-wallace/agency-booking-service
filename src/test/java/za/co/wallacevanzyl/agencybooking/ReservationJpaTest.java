@@ -20,10 +20,10 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataJpaTest//This will not load the Bootstrapped DataInitializer context i.e. in memory will be empty. Tests against the database context only (DB, Entities etc). Brings up hibernate and autoconfigures in memory db etc.
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)//This prevents Spring Boot from overriding the MYSQL properties specified in application-local.properties profile with an h2 db instance
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ComponentScan(basePackages = {"za.co.wallacevanzyl.agencybooking.bootstrap"})// This will bring in the DataInitializer into the test and execute its functionality.
+@ComponentScan(basePackages = {"za.co.wallacevanzyl.agencybooking.bootstrap"})
 class ReservationJpaTest {
 
     @Autowired

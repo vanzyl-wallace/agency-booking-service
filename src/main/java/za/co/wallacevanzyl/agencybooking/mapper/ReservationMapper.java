@@ -12,7 +12,9 @@ import za.co.wallacevanzyl.agencybooking.dto.ReservationDto;
 public interface ReservationMapper {
 
     ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
+
     ReservationDto reservationToReservationDto(Reservation reservation);
+
     Reservation reservationDtoToReservation(ReservationDto reservationDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

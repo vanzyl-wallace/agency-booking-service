@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -38,6 +39,14 @@ public class HotelBookingController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @Secured("ROLE_GUEST")
+    @GetMapping(value = "/{page}/{size}")
+    public ResponseEntity<List<Reservation>> getReservationsPaging(@PathVariable("page") int page, @PathVariable("size") int size) {
+        log.info("Retrieving all reservations.");
+        List<Reservation> reservations = reservationDao.getAllReservations(PageRequest.of(page, size));
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -45,13 +54,13 @@ public class HotelBookingController {
 
         log.info("Making a reservation.");
 
-        try{
+        try {
             reservationDao.makeBooking(reservationDto);
             return new ResponseEntity<>("Booking created.", HttpStatus.CREATED);
 
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
             log.warn(dataIntegrityViolationException.getMessage());
-            return new ResponseEntity<>("Cannot make booking - room already booked: " , HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Cannot make booking - room already booked: ", HttpStatus.CONFLICT);
 
         }
     }
@@ -69,9 +78,9 @@ public class HotelBookingController {
             log.warn(entityNotFoundException.getMessage());
             return new ResponseEntity<>("Cannot update booking - Unable to find booking with id: " + id, HttpStatus.NOT_FOUND);
 
-        }  catch (DataIntegrityViolationException dataIntegrityViolationException) {
+        } catch (DataIntegrityViolationException dataIntegrityViolationException) {
             log.warn(dataIntegrityViolationException.getMessage());
-            return new ResponseEntity<>("Cannot update booking to that room - room already booked: " , HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Cannot update booking to that room - room already booked: ", HttpStatus.CONFLICT);
 
         }
     }

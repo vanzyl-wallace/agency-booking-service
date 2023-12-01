@@ -18,7 +18,7 @@ public class Reservation {
     private String lastName;
     private BigInteger contactNumber;
     private BigInteger idNumber;
-    @Column(unique=true)
+    @Column(unique = true)
     private int roomNumber;
 
     private Date checkIn;
